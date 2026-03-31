@@ -5,7 +5,7 @@ with open("alumnos.json", "r") as archivo:
 
 with open("materias.json", "r") as archivo:
     materias = json.load(archivo)
-    
+
 while True:
     print ("------- Bienvenido al sistema de alumnos -------")
     confirmacion = input("¿Esta usted registrado?: ")
@@ -16,7 +16,6 @@ while True:
         if nombre_ingresado in alumnos:
             verificar_contraseña = input("Ingresa tu contraseña: ")
             if verificar_contraseña == alumnos[nombre_ingresado]:
-                ingresado = True
                 print (f'Bienvenido, {nombre_ingresado}, ¿como te puedo ayudar hoy?')
             break
         else:
@@ -30,16 +29,15 @@ while True:
         with open("alumnos.json", "w") as archivo:
             json.dump(alumnos, archivo, indent=4)
         print ("Registro realizado con exito")
-        ingresado = True
         break
     else:
         print("ingrese 'si' o 'no'")
-            
-while ingresado == True:
-    opcion= int(input("¡Ingresaste! \n¿Donde queres dirigirte? \n1.Registro de materias \n2. Ver notas \n3. Ingresar notas \n4.Darse de baja de materias \n5.Salir del sistema"))
+print ("¡Ingresaste!")
+while True:
+    opcion= int(input("¿Donde queres dirigirte? \n1. Registro de materias \n2. Ver notas \n3. Ingresar notas \n4. Darse de baja de materias \n5. Salir del sistema\n-"))
     if opcion == 1:
         print("Materias disponibles: ", materias)
-        seleccion=input("Selecciona la materia a la que te queres inscribir", materias).lower()
+        seleccion=input(f'Selecciona la materia a la que te queres inscribir: ').lower()
         if seleccion in materias:
             # Verificacion de si el alumno ya tiene una lista de materias
             if "materias_inscriptas" not in alumnos[nombre_ingresado]:
@@ -50,9 +48,16 @@ while ingresado == True:
                 with open("alumnos.json", "w") as archivo:
                     json.dump(alumnos, archivo, indent=4)
                 print(f'Te inscribiste con exito a {seleccion}!')
+                continue
             # Si la materia no existe:
             else:
+                print("--------------------------------")
                 print("Ya estas inscripto a esa materia")
+                print("--------------------------------")
+                continue
         else: 
+            print("--------------------------------")
             print("lo sentimos, esa materia no existe")
+            print("--------------------------------")
+            continue
     break

@@ -1,5 +1,12 @@
 {
-    "Agustin": "papito",
-    "Luna": "mamita",
-    "Gilgamesh": "Sumeria"
+    "Agustin": {
+        "password": "papito",
+        "materias_inscriptas": [
+            "matematica"
+        ]
+    },
+    "Luna": {
+        "password": "mamita",
+        "materias_inscriptas": []
+    }
 }
