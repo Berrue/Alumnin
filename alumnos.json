@@ -1,12 +1,11 @@
 {
-    "Agustin": {
+    "Agustin": { 
         "password": "papito",
-        "materias_inscriptas": [
-            "matematica"
-        ]
-    },
-    "Luna": {
+        "materias_inscriptas": {
+            "matematica" : 8 
+        }
+        },
+    "Luna":{
         "password": "mamita",
-        "materias_inscriptas": []
-    }
+        "materias_inscriptas": []}
 }

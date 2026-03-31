@@ -34,7 +34,7 @@ while True:
         print("ingrese 'si' o 'no'")
 print ("¡Ingresaste!")
 while True:
-    opcion= int(input("¿Donde queres dirigirte? \n1. Registro de materias \n2. Ver notas \n3. Ingresar notas \n4. Darse de baja de materias \n5. Salir del sistema\n-"))
+    opcion= int(input("¿Donde queres dirigirte? \n1. Registro de materias \n2. Ingresar notas \n3. Ver notas \n4. Darse de baja de materias \n5. Salir del sistema\n-"))
     if opcion == 1:
         print("Materias disponibles: ", materias)
         seleccion=input(f'Selecciona la materia a la que te queres inscribir: ').lower()
@@ -49,7 +49,7 @@ while True:
                     json.dump(alumnos, archivo, indent=4)
                 print(f'Te inscribiste con exito a {seleccion}!')
                 continue
-            # Si la materia no existe:
+            # Si la materia existe en el diccionario del alumno:
             else:
                 print("--------------------------------")
                 print("Ya estas inscripto a esa materia")
@@ -60,4 +60,12 @@ while True:
             print("lo sentimos, esa materia no existe")
             print("--------------------------------")
             continue
+    if opcion == 2:
+        m_seleccionada= input(f'¿A que materia deseas ingresarle una nota? \n Materias a las que estas inscripto: {materias}: ').lower()
+        if m_seleccionada in alumnos[nombre_ingresado]["materias"]:
+            nuevaNota = int(input(f'Ingresa la nota para {m_seleccionada}: '))
+            
+            print("")
+
+        
     break
