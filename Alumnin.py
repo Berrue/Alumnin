@@ -6,47 +6,57 @@ with open("alumnos.json", "r") as archivo:
 with open("materias.json", "r") as archivo:
     materias = json.load(archivo)
 
+def guardar_datos(datos):
+    with open("alumnos.json", "w") as archivo:
+        json.dump(datos, archivo, indent=4)
+
+# Logeo
 while True:
     print ("------- Bienvenido al sistema de alumnos -------")
-    confirmacion = input("¿Esta usted registrado?: ")
+    confirmacion = input("¿Esta usted registrado? (si/no): ")
    
     if confirmacion.lower() == "si":
      #Confirmacion    
         nombre_ingresado = input("ingrese su nombre: ")
         if nombre_ingresado in alumnos:
             verificar_contraseña = input("Ingresa tu contraseña: ")
-            if verificar_contraseña == alumnos[nombre_ingresado]:
-                print (f'Bienvenido, {nombre_ingresado}, ¿como te puedo ayudar hoy?')
-            break
+            if verificar_contraseña == alumnos[nombre_ingresado]["password"]:
+                print("Ingreso exitoso!")
+                break
         else:
             print("Lo sentimos, no estas registrado")
             
     # Registro
     elif confirmacion.lower() == "no":
-        n_registro = input("Ingrese su nombre: ")
+        n_registro = input("Ingrese su nombre para registrarse: ")
         c_registro = input("Ingrese su contraseña: ")
-        alumnos[n_registro] = c_registro
-        with open("alumnos.json", "w") as archivo:
-            json.dump(alumnos, archivo, indent=4)
+        alumnos[n_registro] = {
+            "password": c_registro,
+            "materias_inscriptas": {} #en el corchete irian las notas
+        }
+        guardar_datos(alumnos)
         print ("Registro realizado con exito")
         break
     else:
         print("ingrese 'si' o 'no'")
 print ("¡Ingresaste!")
+
+
 while True:
+    print("---MENU---")
     opcion= int(input("¿Donde queres dirigirte? \n1. Registro de materias \n2. Ingresar notas \n3. Ver notas \n4. Darse de baja de materias \n5. Salir del sistema\n-"))
     if opcion == 1:
-        print("Materias disponibles: ", materias)
+        print(f'Materias disponibles: {materias.capitalize()}')
         seleccion=input(f'Selecciona la materia a la que te queres inscribir: ').lower()
         if seleccion in materias:
             # Verificacion de si el alumno ya tiene una lista de materias
             if "materias_inscriptas" not in alumnos[nombre_ingresado]:
-                alumnos[nombre_ingresado]["materias inscriptas"] = []
+                alumnos[nombre_ingresado]["materias_inscriptas"] = []
             if seleccion not in alumnos[nombre_ingresado]["materias_inscriptas"]:
-                alumnos[nombre_ingresado]["materias_inscriptas"].append(seleccion)
-                # Lo guardamos:
-                with open("alumnos.json", "w") as archivo:
-                    json.dump(alumnos, archivo, indent=4)
+                alumnos[nombre_ingresado]["materias_inscriptas"]={}
+                # Lo guardamos con una nota 0 por defecto:
+                alumnos[nombre_ingresado]["materias_inscriptas"][seleccion]={0}
+                guardar_datos(alumnos)
                 print(f'Te inscribiste con exito a {seleccion}!')
                 continue
             # Si la materia existe en el diccionario del alumno:
@@ -61,11 +71,29 @@ while True:
             print("--------------------------------")
             continue
     if opcion == 2:
-        m_seleccionada= input(f'¿A que materia deseas ingresarle una nota? \n Materias a las que estas inscripto: {materias}: ').lower()
-        if m_seleccionada in alumnos[nombre_ingresado]["materias"]:
+        mis_materias = alumnos[nombre_ingresado]["materias_inscriptas"]
+        if not mis_materias:
+            print("Primero tenes que inscribirte a una materia.")
+            continue
+        m_seleccionada= input(f'¿A que materia deseas ingresarle una nota? \n Materias a las que estas inscripto: {list(mis_materias.keys())}: ').lower()
+        if m_seleccionada in alumnos[nombre_ingresado]["materias_inscriptas"]:
             nuevaNota = int(input(f'Ingresa la nota para {m_seleccionada}: '))
-            
-            print("")
-
-        
-    break
+            if m_seleccionada in mis_materias:
+                nueva_nota = int(input(f'Escribi la nota para {m_seleccionada}'))
+                alumnos[nombre_ingresado]["materias_inscriptas"][m_seleccionada]= nueva_nota
+                guardar_datos(alumnos)
+                print("Nota cargada")
+            else:
+                print("No estas inscripto en esta carrera")
+    if opcion == 3:
+        mis_materias = alumnos[nombre_ingresado]["materias_inscriptas"]
+        if not mis_materias:
+            print("No estas inscripto a ninguna materia")
+            continue
+        for materia, nota in mis_materias.items():
+            if nota > 4:
+                print(f'{materia.capitalize()}: {nota}: aprobado')
+                print("--------------------------------")
+            if nota<= 4:
+                print(f'{materia.capitalize()}: {nota}: desaprobado')
+                print("--------------------------------")
