@@ -75,7 +75,7 @@ while True:
         if not mis_materias:
             print("Primero tenes que inscribirte a una materia.")
             continue
-        m_seleccionada= input(f'¿A que materia deseas ingresarle una nota? \n Materias a las que estas inscripto: {list(mis_materias.keys())}: ').lower()
+        m_seleccionada= input(f'¿A que materia deseas ingresarle una nota? \nMaterias a las que estas inscripto: {list(mis_materias.keys())}: ').lower()
         if m_seleccionada in alumnos[nombre_ingresado]["materias_inscriptas"]:
             nuevaNota = int(input(f'Ingresa la nota para {m_seleccionada}: '))
             if m_seleccionada in mis_materias:
@@ -97,3 +97,18 @@ while True:
             if nota<= 4:
                 print(f'{materia.capitalize()}: {nota}: desaprobado')
                 print("--------------------------------")
+                
+    if opcion == 4:
+        mis_materias = alumnos[nombre_ingresado]["materias_inscriptas"]
+        if not mis_materias:
+            print ("no estas inscripto en ninguna materia")
+            continue
+        baja_materia = input(f'Ingrese la materia de la que quiere darse de baja \nMaterias a las que estas inscripto: {list(mis_materias.keys())}: ').lower()
+        if baja_materia not in mis_materias:
+            print ("No estas inscripto en esa materia")
+            continue
+        if baja_materia in mis_materias:
+                mis_materias.pop(baja_materia)
+                guardar_datos(alumnos)
+                print (f'Diste de baja {baja_materia.capitalize()}.')
+            
