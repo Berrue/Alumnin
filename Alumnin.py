@@ -35,27 +35,26 @@ while True:
             "materias_inscriptas": {} #en el corchete irian las notas
         }
         guardar_datos(alumnos)
-        print ("Registro realizado con exito")
-        break
+        print ("Registro realizado con exito, vuelva a loguearse para poder entrar\n")
+        continue
     else:
         print("ingrese 'si' o 'no'")
 print ("¡Ingresaste!")
 
 
 while True:
-    print("---MENU---")
+    print("\n---MENU---")
     opcion= int(input("¿Donde queres dirigirte? \n1. Registro de materias \n2. Ingresar notas \n3. Ver notas \n4. Darse de baja de materias \n5. Salir del sistema\n-"))
     if opcion == 1:
-        print(f'Materias disponibles: {materias.capitalize()}')
+        print(f'Materias disponibles: {materias}')
         seleccion=input(f'Selecciona la materia a la que te queres inscribir: ').lower()
         if seleccion in materias:
             # Verificacion de si el alumno ya tiene una lista de materias
             if "materias_inscriptas" not in alumnos[nombre_ingresado]:
-                alumnos[nombre_ingresado]["materias_inscriptas"] = []
+                alumnos[nombre_ingresado]["materias_inscriptas"] = {}
             if seleccion not in alumnos[nombre_ingresado]["materias_inscriptas"]:
-                alumnos[nombre_ingresado]["materias_inscriptas"]={}
                 # Lo guardamos con una nota 0 por defecto:
-                alumnos[nombre_ingresado]["materias_inscriptas"][seleccion]={0}
+                alumnos[nombre_ingresado]["materias_inscriptas"][seleccion]= 0
                 guardar_datos(alumnos)
                 print(f'Te inscribiste con exito a {seleccion}!')
                 continue
@@ -77,7 +76,6 @@ while True:
             continue
         m_seleccionada= input(f'¿A que materia deseas ingresarle una nota? \nMaterias a las que estas inscripto: {list(mis_materias.keys())}: ').lower()
         if m_seleccionada in alumnos[nombre_ingresado]["materias_inscriptas"]:
-            nuevaNota = int(input(f'Ingresa la nota para {m_seleccionada}: '))
             if m_seleccionada in mis_materias:
                 nueva_nota = int(input(f'Escribi la nota para {m_seleccionada}'))
                 alumnos[nombre_ingresado]["materias_inscriptas"][m_seleccionada]= nueva_nota
@@ -85,18 +83,22 @@ while True:
                 print("Nota cargada")
             else:
                 print("No estas inscripto en esta carrera")
+        if m_seleccionada not in materias:
+            print("Ingresa una materia valida")
     if opcion == 3:
         mis_materias = alumnos[nombre_ingresado]["materias_inscriptas"]
         if not mis_materias:
             print("No estas inscripto a ninguna materia")
             continue
         for materia, nota in mis_materias.items():
-            if nota > 4:
+            print("--------------------------------")
+            if nota >= 4:
                 print(f'{materia.capitalize()}: {nota}: aprobado')
-                print("--------------------------------")
-            if nota<= 4:
+            if nota >0 and nota < 4:
                 print(f'{materia.capitalize()}: {nota}: desaprobado')
-                print("--------------------------------")
+            if nota == 0:
+                print(f'{materia.capitalize()} no tiene notas cargadas')
+                
                 
     if opcion == 4:
         mis_materias = alumnos[nombre_ingresado]["materias_inscriptas"]
@@ -111,4 +113,7 @@ while True:
                 mis_materias.pop(baja_materia)
                 guardar_datos(alumnos)
                 print (f'Diste de baja {baja_materia.capitalize()}.')
-            
+                
+    if opcion == 5:
+        print ("Muchas gracias por usar Alumnin, ¡hasta la proxima!")
+        break

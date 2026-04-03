@@ -2,13 +2,14 @@
     "Agustin": {
         "password": "papito",
         "materias_inscriptas": {
-            "geografia": 5
+            "deporte": 5,
+            "geografia": 10
         }
     },
     "Luna": {
         "password": "mamita",
         "materias_inscriptas": {
-            "geografia": 0
+            "matematica": 0
         }
     }
 }
